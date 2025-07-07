@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Focus Planner</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container-panel">     
+    <div class="panel-topbar">
+      <div class="panel-datebox" id="headerDate">
+        <span id="headerDateText">Monday, November 7</span>
+        <span class="icon-dropdown"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+    </div>
+    <div class="nav-controlbar">
+      <div class="panel-title" id="navTitle">
+        <span id="navTitleText">November 2022</span>
+        <div class="panel-arrows">
+          <span>&#9650;</span> 
+          <span>&#9660;</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-content">         
+      <div class="day-labels" id="daysHeader">
+        <div class="day-text">Su</div>
+        <div class="day-text">Mo</div>
+        <div class="day-text">Tu</div>
+        <div class="day-text">We</div>
+        <div class="day-text">Th</div>
+        <div class="day-text">Fr</div>
+        <div class="day-text">Sa</div>
+      </div>
+      <div class="grid-area view-month" id="calendarGrid"></div>
+    </div>        
+    <div class="footer-zone">
+      <div class="controls-bottom">
+        <div class="timer-adjust">
+          <button class="adjust-btn" id="decreaseTime">−</button>
+          <span class="time-output" id="timeIndicator">30 mins</span>
+          <button class="adjust-btn" id="increaseTime">+</button>
+        </div>
+        <button class="focus-toggle" id="focusBtn">
+          <span class="icon-play">▶</span>
+          <span>Focus</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>

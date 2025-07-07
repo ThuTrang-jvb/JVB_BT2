@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>week-2</title>
+  <link rel="stylesheet" href="styl.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+<div class="windows-calendar">     
+  <div class="header">
+    <div class="header-date" id="headerDate">
+      <span id="headerDateText">Monday, November 7</span>
+      <span class="header-chevron "><i class="fa-solid fa-chevron-down"></i></span>
+    </div>
+  </div>
+  <div class="calendar-nav">
+    <div class="nav-title" id="navTitle">
+      <span id="navTitleText">November 2022</span>
+      <div class="nav-arrows">
+        <span>&#9650;</span> 
+        <span>&#9660;</span>
+      </div>
+    </div>
+  </div>
+  <div class="calendar-content">         
+    <div class="days-header" id="daysHeader">
+        <div class="day-header">Su</div>
+        <div class="day-header">Mo</div>
+        <div class="day-header">Tu</div>
+        <div class="day-header">We</div>
+        <div class="day-header">Th</div>
+        <div class="day-header">Fr</div>
+        <div class="day-header">Sa</div>
+    </div>
+    <div class="calendar-grid month-grid" id="calendarGrid"></div>
+  </div>        
+  <div class="calendar-footer">
+            <div class="footer-controls">
+                <div class="time-control">
+                    <button class="time-btn" id="decreaseTime">−</button>
+                    <span class="time-indicator" id="timeIndicator">30 mins</span>
+                    <button class="time-btn" id="increaseTime">+</button>
+                </div>
+                <button class="focus-btn" id="focusBtn">
+                    <span class="focus-icon">▶</span>
+                    <span>Focus</span>
+                </button>
+            </div>
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
+
+

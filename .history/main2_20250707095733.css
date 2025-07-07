@@ -1,0 +1,302 @@
+// Đổi tên class: WindowsCalendar -> FocusPlanner
+class FocusPlanner {
+    constructor() {
+        this.currentDate = new Date();
+        this.selectedDate = new Date();
+        this.currentMonth = new Date();
+        this.viewMode = 'month'; 
+        this.timeMinutes = 30;
+        this.focusInterval = null;   
+        this.remainingSeconds = 0;
+
+        this.months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        this.monthsShort = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.updateDisplay();
+        this.startRealTimeUpdate();
+    }
+
+    bindEvents() {
+        document.getElementById('topDate').addEventListener('click', () => this.handleHeaderClick());
+        document.getElementById('navInfo').addEventListener('click', () => this.handleNavTitleClick());
+        const arrows = document.querySelectorAll('.arrow-group span');
+        if (arrows.length >= 2) {
+            arrows[0].addEventListener('click', () => this.navigate(-1)); 
+            arrows[1].addEventListener('click', () => this.navigate(1));
+        }
+
+        document.getElementById('decreaseTime').addEventListener('click', () => this.adjustTime(-5));
+        document.getElementById('increaseTime').addEventListener('click', () => this.adjustTime(15));
+        document.getElementById('focusBtn').addEventListener('click', () => this.toggleFocus());
+    }
+
+    adjustTime(minutes) {
+        this.timeMinutes += minutes;
+        if (this.timeMinutes < 5) this.timeMinutes = 5;
+        if (this.timeMinutes > 480) this.timeMinutes = 480;
+        this.updateTimeDisplay();
+    }
+
+    updateTimeDisplay() {
+        const timeIndicator = document.getElementById('timeIndicator');
+        if (this.timeMinutes >= 60) {
+            const hours = Math.floor(this.timeMinutes / 60);
+            const mins = this.timeMinutes % 60;
+            timeIndicator.textContent = mins === 0 ? `${hours} hr${hours > 1 ? 's' : ''}` : `${hours}h ${mins}m`;
+        } else {
+            timeIndicator.textContent = `${this.timeMinutes} mins`;
+        }
+    }
+
+    toggleFocus() {
+        const focusBtn = document.getElementById('focusBtn');
+        const icon = focusBtn.querySelector('.icon-focus');
+        const text = focusBtn.querySelector('span:last-child');
+
+        if (text.textContent === 'Focus') {
+            text.textContent = 'Stop';
+            icon.textContent = '⏸';
+            focusBtn.style.color = '#60a5fa';
+            this.remainingSeconds = this.timeMinutes * 60;
+
+            this.focusInterval = setInterval(() => {
+                this.remainingSeconds--;
+                this.updateCountdownDisplay();
+
+                if (this.remainingSeconds <= 0) {
+                    clearInterval(this.focusInterval);
+                    this.focusInterval = null;
+                    alert("Time's up!");
+                    this.resetFocusButton();
+                }
+            }, 1000);
+        } else {
+            clearInterval(this.focusInterval);
+            this.focusInterval = null;
+            this.resetFocusButton();
+            this.updateTimeDisplay(); 
+        }
+    }
+
+    updateCountdownDisplay() {
+        const timeIndicator = document.getElementById('timeIndicator');
+        const minutes = Math.floor(this.remainingSeconds / 60);
+        const seconds = this.remainingSeconds % 60;
+        timeIndicator.textContent = `${minutes}m ${seconds}s`;
+    }
+
+    resetFocusButton() {
+        const focusBtn = document.getElementById('focusBtn');
+        const icon = focusBtn.querySelector('.icon-focus');
+        const text = focusBtn.querySelector('span:last-child');
+        text.textContent = 'Focus';
+        icon.textContent = '\u25B6';
+        focusBtn.style.color = '#888888';
+    }
+
+    startRealTimeUpdate() {
+        setInterval(() => {
+            this.currentDate = new Date();
+            this.updateHeaderDate();
+        }, 1000);
+    }
+
+    handleHeaderClick() {
+        if (this.viewMode !== 'month') {
+            this.viewMode = 'month';
+            this.updateDisplay();
+        }
+    }
+
+    handleNavTitleClick() {
+        this.viewMode = this.viewMode === 'month' ? 'year' : this.viewMode === 'year' ? 'decade' : 'decade';
+        this.updateDisplay();
+    }
+
+    navigate(direction) {
+        if (this.viewMode === 'month') {
+            this.currentMonth.setMonth(this.currentMonth.getMonth() + direction);
+        } else if (this.viewMode === 'year') {
+            this.currentMonth.setFullYear(this.currentMonth.getFullYear() + direction);
+        } else {
+            this.currentMonth.setFullYear(this.currentMonth.getFullYear() + direction * 10);
+        }
+        this.updateDisplay();
+    }
+
+    updateDisplay() {
+        this.updateHeaderDate();
+        this.updateNavTitle();
+        this.updateCalendarGrid();
+        this.updateDaysHeaderVisibility();
+        this.updateTimeDisplay();
+    }
+
+    updateHeaderDate() {
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        const dateText = this.selectedDate.toLocaleDateString('en-US', options);
+        document.getElementById('topDateText').textContent = dateText;
+    }
+
+    updateNavTitle() {
+        let titleText = '';
+        if (this.viewMode === 'month') {
+            titleText = `${this.months[this.currentMonth.getMonth()]} ${this.currentMonth.getFullYear()}`;
+        } else if (this.viewMode === 'year') {
+            titleText = this.currentMonth.getFullYear().toString();
+        } else {
+            const startYear = Math.floor(this.currentMonth.getFullYear() / 10) * 10;
+            titleText = `${startYear} - ${startYear + 9}`;
+        }
+        document.getElementById('navText').textContent = titleText;
+    }
+
+    updateDaysHeaderVisibility() {
+        const daysHeader = document.getElementById('daysHeader');
+        const calendarGrid = document.getElementById('dateArea');
+
+        if (this.viewMode === 'month') {
+            daysHeader.classList.remove('hidden');
+            calendarGrid.className = 'date-grid';
+        } else {
+            daysHeader.classList.add('hidden');
+            calendarGrid.className = `${this.viewMode}-grid`;
+        }
+    }
+
+    updateCalendarGrid() {
+        const grid = document.getElementById('dateArea');
+        grid.innerHTML = '';
+
+        if (this.viewMode === 'month') {
+            this.renderMonthView(grid);
+        } else if (this.viewMode === 'year') {
+            this.renderYearView(grid);
+        } else {
+            this.renderDecadeView(grid);
+        }
+    }
+
+    renderMonthView(grid) {
+        const daysInMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 0).getDate();
+        const firstDay = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getDay();
+
+        const prevMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 0);
+        const prevMonthDays = prevMonth.getDate();
+
+        for (let i = firstDay - 1; i >= 0; i--) {
+            const day = document.createElement('div');
+            day.className = 'day-box other';
+            day.textContent = prevMonthDays - i;
+            grid.appendChild(day);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), day);
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day-box';
+            dayElement.textContent = day;
+
+            if (this.isSameDay(date, this.currentDate)) {
+                dayElement.classList.add('today');
+            }
+            if (this.isSameDay(date, this.selectedDate)) {
+                dayElement.classList.add('active');
+            }
+
+            dayElement.addEventListener('click', () => {
+                this.selectedDate = new Date(date);
+                this.updateDisplay();
+            });
+
+            grid.appendChild(dayElement);
+        }
+
+        const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+        const remainingCells = totalCells - (firstDay + daysInMonth);
+
+        for (let day = 1; day <= remainingCells; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day-box other';
+            dayElement.textContent = day;
+            grid.appendChild(dayElement);
+        }
+    }
+
+    renderYearView(grid) {
+        for (let month = 0; month < 12; month++) {
+            const monthElement = document.createElement('div');
+            monthElement.className = 'year-cell';
+            monthElement.textContent = this.monthsShort[month];
+
+            const date = new Date(this.currentMonth.getFullYear(), month, 1);
+
+            if (month === this.currentDate.getMonth() && this.currentMonth.getFullYear() === this.currentDate.getFullYear()) {
+                monthElement.classList.add('current');
+            }
+            if (month === this.currentMonth.getMonth()) {
+                monthElement.classList.add('active');
+            }
+
+            monthElement.addEventListener('click', () => {
+                this.currentMonth.setMonth(month);
+                this.viewMode = 'month';
+                this.updateDisplay();
+            });
+
+            grid.appendChild(monthElement);
+        }
+    }
+
+    renderDecadeView(grid) {
+        const currentYear = this.currentMonth.getFullYear();
+        const startYear = Math.floor(currentYear / 10) * 10 - 2;
+
+        for (let i = 0; i < 16; i++) {
+            const year = startYear + i;
+            const yearElement = document.createElement('div');
+            yearElement.className = 'decade-cell';
+            yearElement.textContent = year;
+
+            if (year === this.currentDate.getFullYear()) {
+                yearElement.classList.add('current');
+            }
+            if (year === this.currentMonth.getFullYear()) {
+                yearElement.classList.add('active');
+            }
+            if (i < 2 || i > 13) {
+                yearElement.classList.add('out-of-range');
+            }
+
+            yearElement.addEventListener('click', () => {
+                this.currentMonth.setFullYear(year);
+                this.viewMode = 'year';
+                this.updateDisplay();
+            });
+
+            grid.appendChild(yearElement);
+        }
+    }
+
+    isSameDay(date1, date2) {
+        return date1.getDate() === date2.getDate() &&
+               date1.getMonth() === date2.getMonth() &&
+               date1.getFullYear() === date2.getFullYear();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new FocusPlanner();
+});

@@ -1,0 +1,247 @@
+/* Reset và thiết lập cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-panel {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.panel-topbar {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-bottom: 1px solid #444;
+}
+
+.panel-datebox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.panel-datebox:hover {
+    color: #53a7f3;
+}
+
+.icon-dropdown {
+    opacity: 0.6;
+    font-size: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 4px 5px;
+    border-radius: 5px;
+}
+
+.nav-controlbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background-color: #1e1e1e;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 120px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.panel-title:hover {
+    color: #53a7f3;
+}
+
+.panel-arrows {
+    display: flex;
+    gap: 25px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.arrow-btn:hover {
+    background-color: #333;
+    color: #53a7f3;
+}
+
+.panel-content {
+    padding: 12px 10px;
+}
+
+.day-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 10px;
+}
+
+.day-text {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    padding: 7px 4px;
+}
+
+.grid-area {
+    display: grid;
+    gap: 3px;
+}
+
+.view-month {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.view-year, .view-decade {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.cell-day, .cell-month, .cell-year {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+    color: #fff;
+}
+
+.cell-day {
+    border-radius: 6px;
+    min-height: 34px;
+}
+
+.cell-day:hover,
+.cell-month:hover,
+.cell-year:hover {
+    background-color: #333;
+    border-radius: 50%;
+}
+
+.cell-day.outside,
+.cell-year.old {
+    color: #777;
+}
+
+.cell-day.active,
+.cell-month.active,
+.cell-year.active {
+    background-color: #007acc;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.cell-day.selected,
+.cell-month.selected,
+.cell-year.selected {
+    border: 2px solid #7fffd4;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.footer-zone {
+    padding: 14px 16px;
+    border-top: 1px solid #333;
+    background-color: #1e1e1e;
+}
+
+.controls-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timer-adjust {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.adjust-btn {
+    background-color: #333;
+    color: #fff;
+    font-size: 13px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.adjust-btn:hover {
+    color: #53a7f3;
+}
+
+.time-output {
+    font-size: 13px;
+    color: #fff;
+    min-width: 60px;
+    text-align: center;
+}
+
+.focus-toggle {
+    background-color: #333;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.focus-toggle:hover {
+    background-color: #3a3a3a;
+    color: #53a7f3;
+}
+
+.icon-play {
+    font-size: 12px;
+}
+
+.is-hidden {
+    display: none;
+}

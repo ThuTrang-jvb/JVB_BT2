@@ -1,0 +1,327 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.windows-calendar {
+    background: #2d2d2d;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid #404040;
+    overflow: hidden;
+}
+
+.calendar-header {
+    background: #2d2d2d;
+    padding: 18px 22px;
+    border-bottom: 1px solid #000;
+}
+
+.header-date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ffffff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#navTitleText{
+    font-size: 16px;
+}
+
+.header-date:hover {
+    color: #60a5fa;
+}
+
+.header-chevron {
+     opacity: 0.7;  /* trong suot 70% mo 30% */
+    font-size: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3px 4px;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    padding: 10px 22px;
+    background: #2d2d2d;
+    
+}
+
+.nav-title {
+    display: flex;
+    align-items: center;
+    gap: 150px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.nav-title:hover {
+    color: #60a5fa;
+}
+
+.nav-arrows {
+    display: flex;
+    gap: 30px;
+    font-size: 10px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 6px; 
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+.nav-btn:hover {
+    background: #404040;
+    color: #60a5fa;
+}
+
+.calendar-content {
+    padding: 10px 9px;
+}
+
+.days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 8px;
+
+        
+}
+
+.day-header {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    padding: 8px 4px;
+}
+
+.calendar-grid {
+    display: grid;
+    gap: 2px;
+}
+
+.month-grid {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.year-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.decade-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    min-height: 32px;
+}
+
+.calendar-day:hover {
+    background: #404040;
+    
+}
+
+.calendar-day.other-month {
+    color: #666666;
+}
+
+.calendar-day.today {
+    background: #0078d4;
+    color: white;
+    font-weight: 600;
+}
+
+.calendar-day.selected {
+    background: none;
+    border: 2px solid paleturquoise;
+    color: white;
+    font-weight: 600;
+    border-radius: 50%;
+}
+
+.year-month {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    min-height: 48px;
+}
+
+.year-month:hover {
+    background: #404040;
+}
+
+.year-month.current {
+    background: #0078d4;
+    color: white;
+}
+
+.year-month.selected {
+    background: #60a5fa;
+    color: white;
+}
+
+.decade-year {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    min-height: 48px;
+}
+
+.decade-year:hover {
+    background: #404040;
+}
+
+.decade-year.other-decade {
+    color: #666666;
+}
+
+.decade-year.current {
+    background: #0078d4;
+    color: white;
+}
+
+.decade-year.selected {
+    background: #60a5fa;
+    color: white;
+}
+
+.calendar-footer {
+    padding: 12px 14px;
+    border-top: 1px solid #404040;
+    background: #2d2d2d;
+}
+
+.footer-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.time-btn {
+    background: #404040;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3px 4px;
+    transition: all 0.2s ease;
+}
+
+.time-btn:hover {
+    background: #404040;
+    color: #60a5fa;
+}
+
+.time-indicator {
+    font-size: 13px;
+    color: white;
+    min-width: 50px;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.focus-btn {
+    background: #404040;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3px 4px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.focus-btn:hover {
+    color: #60a5fa;
+    background: #404040;
+}
+
+.focus-icon {
+    font-size: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive */
+/* @media (max-width: 480px) {
+    .windows-calendar {
+        width: 90%;
+        margin: 10px;
+    }
+} */

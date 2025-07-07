@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendar</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div class="calendar">     
+    <div class="top-bar">
+      <div class="date-display" id="dateToggle">
+        <span id="dateText">Monday, November 7</span>
+        <span class="dropdown-icon" id="dropdownIcon">
+          <button class="fa-solid fa-chevron-down"></i>
+        </span>
+      </div>
+    </div>
+    
+    <div class="navigation-bar">
+      <div class="title-block" id="calendarTitle">
+        <span id="calendarTitleText">November 2022</span>
+        <div class="arrow-controls">
+          <span>&#9650;</span> 
+          <span>&#9660;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-calendar">         
+      <div class="weekday-header" id="weekdayHeader">
+        <div class="weekday">Su</div>
+        <div class="weekday">Mo</div>
+        <div class="weekday">Tu</div>
+        <div class="weekday">We</div>
+        <div class="weekday">Th</div>
+        <div class="weekday">Fr</div>
+        <div class="weekday">Sa</div>
+      </div>
+      <div class="grid-display month-view" id="gridContainer"></div>
+    </div>        
+
+    <div class="bottom-panel">
+      <div class="control-section">
+        <div class="session-control">
+          <button class="btn-time" id="minusTime">−</button>
+          <span class="time-display" id="durationLabel">30 mins</span>
+          <button class="btn-time" id="plusTime">+</button>
+        </div>
+        <button class="session-btn" id="startBtn">
+          <span class="session-icon">▶</span>
+          <span>Focus</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
