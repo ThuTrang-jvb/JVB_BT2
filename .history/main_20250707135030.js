@@ -51,7 +51,7 @@ class Calendar {
 
     updateTimeDisplay() {
         const timeLabel = document.getElementById('durationLabel');
-        timeLabel.textContent = `${this.timeMinutes} mins`;
+            timeLabel.textContent = `${this.timeMinutes} mins`;
     }
 
     toggleFocus() {
