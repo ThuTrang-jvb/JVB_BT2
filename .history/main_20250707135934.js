@@ -18,44 +18,43 @@ class Calendar {
             'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
         ];
 
-        this.initializeCalendar();
+        this.init();
     }
 
-    initializeCalendar() {
-        this.bindUIEvents();
-        this.renderCalendar();
-        this.startClockUpdate();
+    init() {
+        this.bindEvents();
+        this.updateDisplay();
+        this.startRealTimeUpdate();
     }
 
-    bindUIEvents() {
-        document.getElementById('dateText').addEventListener('click', () => this.goToTodayMonthView());
-        document.querySelector('.dropdown-icon').addEventListener('click', () => this.toggleCollapseCalendar());
-        document.getElementById('calendarTitle').addEventListener('click', () => this.switchViewMode());
-
+    bindEvents() {
+        document.getElementById('dateText').addEventListener('click', () => this.handleHeaderClick())
+        document.querySelector('.dropdown-icon').addEventListener('click', () => this.isCollapsed());
+        document.getElementById('calendarTitle').addEventListener('click', () => this.handleNavTitleClick());
         const arrows = document.querySelectorAll('.arrow-controls span');
         if (arrows.length >= 2) {
-            arrows[0].addEventListener('click', () => this.navigateCalendar(-1)); 
-            arrows[1].addEventListener('click', () => this.navigateCalendar(1));
+            arrows[0].addEventListener('click', () => this.navigate(-1)); 
+            arrows[1].addEventListener('click', () => this.navigate(1));
         }
 
-        document.getElementById('minusTime').addEventListener('click', () => this.adjustFocusTime(-5));
-        document.getElementById('plusTime').addEventListener('click', () => this.adjustFocusTime(15));
-        document.getElementById('startBtn').addEventListener('click', () => this.toggleFocusSession());
+        document.getElementById('minusTime').addEventListener('click', () => this.adjustTime(-5));
+        document.getElementById('plusTime').addEventListener('click', () => this.adjustTime(15));
+        document.getElementById('startBtn').addEventListener('click', () => this.toggleFocus());
     }
 
-    adjustFocusTime(minutes) {
+    adjustTime(minutes) {
         this.timeMinutes += minutes;
         if (this.timeMinutes < 5) this.timeMinutes = 5;
         if (this.timeMinutes > 480) this.timeMinutes = 480;
-        this.renderFocusTimeLabel();
+        this.updateTimeDisplay();
     }
 
-    renderFocusTimeLabel() {
+    updateTimeDisplay() {
         const timeLabel = document.getElementById('durationLabel');
         timeLabel.textContent = `${this.timeMinutes} mins`;
     }
 
-    toggleFocusSession() {
+    toggleFocus() {
         const focusBtn = document.getElementById('startBtn');
         const icon = focusBtn.querySelector('.session-icon');
         const text = focusBtn.querySelector('span:last-child');
@@ -68,31 +67,32 @@ class Calendar {
 
             this.focusInterval = setInterval(() => {
                 this.remainingSeconds--;
-                this.renderCountdownTime();
+                this.updateCountdownDisplay();
 
                 if (this.remainingSeconds <= 0) {
                     clearInterval(this.focusInterval);
                     this.focusInterval = null;
                     alert("Time's up!");
-                    this.resetFocusUI();
+                    this.resetFocusButton();
                 }
             }, 1000);
+
         } else {
             clearInterval(this.focusInterval);
             this.focusInterval = null;
-            this.resetFocusUI();
-            this.renderFocusTimeLabel(); 
+            this.resetFocusButton();
+            this.updateTimeDisplay(); 
         }
     }
 
-    renderCountdownTime() {
+    updateCountdownDisplay() {
         const timeLabel = document.getElementById('durationLabel');
         const minutes = Math.floor(this.remainingSeconds / 60);
         const seconds = this.remainingSeconds % 60;
         timeLabel.textContent = `${minutes}m ${seconds}s`;
     }
 
-    resetFocusUI() {
+    resetFocusButton() {
         const focusBtn = document.getElementById('startBtn');
         const icon = focusBtn.querySelector('.session-icon');
         const text = focusBtn.querySelector('span:last-child');
@@ -102,21 +102,22 @@ class Calendar {
         focusBtn.style.color = '#888888';
     }
 
-    startClockUpdate() {
+    startRealTimeUpdate() {
         setInterval(() => {
             this.currentDate = new Date();
-            this.renderCurrentDateHeader();
+            this.updateHeaderDate();
         }, 1000);
     }
 
-    goToTodayMonthView() {
-        this.viewMode = 'month';
-        this.currentMonth = new Date(this.currentDate);    
-        this.selectedDate = new Date(this.currentDate); 
-        this.renderCalendar();
+    handleHeaderClick() {
+            this.viewMode = 'month';
+            this.currentMonth = new Date(this.currentDate);    
+            this.selectedDate = new Date(this.currentDate); 
+            this.updateDisplay();
+        
     }
 
-    switchViewMode() {
+    handleNavTitleClick() {
         switch (this.viewMode) {
             case 'month':
                 this.viewMode = 'year';
@@ -125,10 +126,10 @@ class Calendar {
                 this.viewMode = 'decade';
                 break;
         }
-        this.renderCalendar();
+        this.updateDisplay();
     }
 
-    navigateCalendar(direction) {
+    navigate(direction) {
         switch (this.viewMode) {
             case 'month':
                 this.currentMonth.setMonth(this.currentMonth.getMonth() + direction);
@@ -140,24 +141,24 @@ class Calendar {
                 this.currentMonth.setFullYear(this.currentMonth.getFullYear() + direction * 10);
                 break;
         }
-        this.renderCalendar();
+        this.updateDisplay();
     }
 
-    renderCalendar() {
-        this.renderCurrentDateHeader();
-        this.renderNavigationTitle();
-        this.renderGridContent();
-        this.toggleWeekdayHeader();
-        this.renderFocusTimeLabel();
+    updateDisplay() {
+        this.updateHeaderDate();
+        this.updateNavTitle();
+        this.updateCalendarGrid();
+        this.updateWeekdayHeader();
+        this.updateTimeDisplay();
     }
 
-    renderCurrentDateHeader() {
+    updateHeaderDate() {
         const options = { weekday: 'long', month: 'long', day: 'numeric' };
         const dateText = this.currentDate.toLocaleDateString('en-US', options);
         document.getElementById('dateText').textContent = dateText;
     }
 
-    renderNavigationTitle() {
+    updateNavTitle() {
         let titleText = '';
         switch (this.viewMode) {
             case 'month':
@@ -174,7 +175,7 @@ class Calendar {
         document.getElementById('calendarTitleText').textContent = titleText;
     }
 
-    toggleWeekdayHeader() {
+    updateWeekdayHeader() {
         const header = document.getElementById('weekdayHeader');
         const grid = document.getElementById('gridContainer');
 
@@ -187,24 +188,24 @@ class Calendar {
         }
     }
 
-    renderGridContent() {
+    updateCalendarGrid() {
         const grid = document.getElementById('gridContainer');
         grid.innerHTML = '';
 
         switch (this.viewMode) {
             case 'month':
-                this.renderMonthGrid(grid);
+                this.renderMonthView(grid);
                 break;
             case 'year':
-                this.renderYearGrid(grid);
+                this.renderYearView(grid);
                 break;
             case 'decade':
-                this.renderDecadeGrid(grid);
+                this.renderDecadeView(grid);
                 break;
         }
     }
 
-    renderMonthGrid(grid) {
+    renderMonthView(grid) {
         const daysInMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 0).getDate();
         const firstDay = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getDay();
         const prevMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 0);
@@ -223,12 +224,12 @@ class Calendar {
             dayElement.className = 'grid-cell';
             dayElement.textContent = day;
 
-            if (this.isEqualDay(date, this.currentDate)) dayElement.classList.add('today');
-            if (this.isEqualDay(date, this.selectedDate)) dayElement.classList.add('selected');
+            if (this.isSameDay(date, this.currentDate)) dayElement.classList.add('today');
+            if (this.isSameDay(date, this.selectedDate)) dayElement.classList.add('selected');
 
             dayElement.addEventListener('click', () => {
                 this.selectedDate = new Date(date);
-                this.renderCalendar();
+                this.updateDisplay();
             });
 
             grid.appendChild(dayElement);
@@ -245,11 +246,13 @@ class Calendar {
         }
     }
 
-    renderYearGrid(grid) {
+    renderYearView(grid) {
         for (let month = 0; month < 12; month++) {
             const monthElement = document.createElement('div');
             monthElement.className = 'year-cell';
             monthElement.textContent = this.monthsShort[month];
+
+            const date = new Date(this.currentMonth.getFullYear(), month, 1);
 
             if (month === this.currentDate.getMonth() && this.currentMonth.getFullYear() === this.currentDate.getFullYear()) {
                 monthElement.classList.add('current');
@@ -261,14 +264,14 @@ class Calendar {
             monthElement.addEventListener('click', () => {
                 this.currentMonth.setMonth(month);
                 this.viewMode = 'month';
-                this.renderCalendar();
+                this.updateDisplay();
             });
 
             grid.appendChild(monthElement);
         }
     }
 
-    renderDecadeGrid(grid) {
+    renderDecadeView(grid) {
         const currentYear = this.currentMonth.getFullYear();
         const startYear = Math.floor(currentYear / 10) * 10 - 2;
 
@@ -285,20 +288,19 @@ class Calendar {
             yearElement.addEventListener('click', () => {
                 this.currentMonth.setFullYear(year);
                 this.viewMode = 'year';
-                this.renderCalendar();
+                this.updateDisplay();
             });
 
             grid.appendChild(yearElement);
         }
     }
 
-    isEqualDay(date1, date2) {
+    isSameDay(date1, date2) {
         return date1.getDate() === date2.getDate() &&
                date1.getMonth() === date2.getMonth() &&
                date1.getFullYear() === date2.getFullYear();
     }
-
-    toggleCollapseCalendar() {
+    isCollapsed() {
         const calendar = document.querySelector('.calendar');
         const mainCalendar = document.querySelector('.main-calendar');
         const navigationBar = document.querySelector('.navigation-bar');
@@ -328,6 +330,7 @@ class Calendar {
             }
         }
     }
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
